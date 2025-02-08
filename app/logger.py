@@ -2,7 +2,7 @@ import os
 import logging
 from logging.handlers import RotatingFileHandler
 
-from app.env_validator import get_settings
+from app.common.utils.env_validator import get_settings
 
 settings = get_settings()
 log_format = (

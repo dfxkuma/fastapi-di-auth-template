@@ -8,6 +8,8 @@ from app.hello.dto import hello_dto
 from app.hello.services import HelloService
 from app.containers import AppContainers
 
+from app.common.exceptions import UserNotFound
+
 router = APIRouter(
     prefix="/hello",
     tags=["hello"],
@@ -25,7 +27,8 @@ class HelloEndpoint:
         data: hello_dto.EnterNameDto,
         service: "HelloService" = Depends(Provide[AppContainers.hello.service]),
     ):
-        return APIMessage(detail=str(await service.hello(data.name)))
+        raise UserNotFound(resource_id="123")
+        # return APIMessage(detail=str(await service.hello(data.name)))
 
     @router.post("/write", response_model=APIMessage, description="Write a message")
     @inject
@@ -38,7 +41,9 @@ class HelloEndpoint:
             detail=str(await service.write_message(data.username, data.message))
         )
 
-    @router.get("/get/{entity_id}", response_model=APIMessage, description="Get a message")
+    @router.get(
+        "/get/{entity_id}", response_model=APIMessage, description="Get a message"
+    )
     @inject
     async def get_hello(
         self,

@@ -1,5 +1,7 @@
 from tortoise import Model, fields
 
+__all__ = ["Message"]
+
 
 class Message(Model):
     id = fields.IntField(pk=True, generated=True)

@@ -1,16 +1,26 @@
-from typing import Literal
+from typing import Literal, Optional, Type
 from functools import lru_cache
 from pydantic import field_validator
-
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+__all__ = ["get_settings"]
 
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8",
+        env_ignore_empty=True,
+        extra="ignore",
+    )
 
     APP_ENV: Literal["development", "production", "testing"]
     SERVER_PORT: int
     DATABASE_URI: str
+    GOOGLE_CLIENT_ID: str
+    GOOGLE_CLIENT_SECRET: str
+    GOOGLE_REDIRECT_URI: str
+    JWT_SECRET_KEY: str
 
     @staticmethod
     @field_validator("SERVER_PORT")
